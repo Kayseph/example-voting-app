@@ -1,1 +1,12 @@
+.git
+.env
+.env.*
+*.log
 node_modules/
+npm-debug.log*
+
+# Local backup files
+*.backup
+*.before-nonroot
+
+*.before-vote-nonroot

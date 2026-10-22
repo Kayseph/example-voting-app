@@ -1,40 +1,36 @@
-# version is now using "compose spec"
-# v2 and v3 are now combined!
-# docker-compose v1.27+ required
 
 services:
   vote:
-    build: 
+    build:
       context: ./vote
       target: dev
     depends_on:
       redis:
         condition: service_healthy
-    healthcheck: 
-      test: ["CMD", "curl", "-f", "http://localhost"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 15s
       timeout: 5s
       retries: 3
       start_period: 10s
     volumes:
-     - ./vote:/usr/local/app
+      - ./vote:/usr/local/app
     ports:
-      - "8080:80"
+      - "8080:8080"
     networks:
       - front-tier
       - back-tier
 
   result:
     build: ./result
-    # use nodemon rather than node for local dev
     entrypoint: nodemon --inspect=0.0.0.0 server.js
     depends_on:
       db:
-        condition: service_healthy 
+        condition: service_healthy
     volumes:
       - ./result:/usr/local/app
     ports:
-      - "8081:80"
+      - "8081:3000"
       - "127.0.0.1:9229:9229"
     networks:
       - front-tier
@@ -45,9 +41,9 @@ services:
       context: ./worker
     depends_on:
       redis:
-        condition: service_healthy 
+        condition: service_healthy
       db:
-        condition: service_healthy 
+        condition: service_healthy
     networks:
       - back-tier
 
@@ -57,7 +53,7 @@ services:
       - "./healthchecks:/healthchecks"
     healthcheck:
       test: /healthchecks/redis.sh
-      interval: "5s"
+      interval: 5s
     networks:
       - back-tier
 
@@ -71,19 +67,16 @@ services:
       - "./healthchecks:/healthchecks"
     healthcheck:
       test: /healthchecks/postgres.sh
-      interval: "5s"
+      interval: 5s
     networks:
       - back-tier
 
-  # this service runs once to seed the database with votes
-  # it won't run unless you specify the "seed" profile
-  # docker compose --profile seed up -d
   seed:
     build: ./seed-data
     profiles: ["seed"]
     depends_on:
       vote:
-        condition: service_healthy 
+        condition: service_healthy
     networks:
       - front-tier
     restart: "no"

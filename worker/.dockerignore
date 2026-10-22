@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+*.log
+bin/
+obj/
+
+# Local backup files
+*.backup
+*.before-nonroot
+
+*.before-vote-nonroot

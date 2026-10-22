@@ -4,3 +4,9 @@
 *.log
 __pycache__/
 *.pyc
+
+# Local backup files
+*.backup
+*.before-nonroot
+
+*.before-vote-nonroot

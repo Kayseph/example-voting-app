@@ -1,0 +1,14 @@
+.git
+.env
+.env.*
+*.log
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local backup files
+*.backup
+*.before-nonroot
+
+*.before-vote-nonroot
