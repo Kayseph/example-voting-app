@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: result
   labels:
     app: result
-  name: result
 spec:
   replicas: 1
   selector:
@@ -15,8 +15,9 @@ spec:
         app: result
     spec:
       containers:
-      - image: dockersamples/examplevotingapp_result
-        name: result
-        ports:
-        - containerPort: 80
-          name: result
+        - name: result
+          image: example-voting-app-result:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: result
+              containerPort: 3000

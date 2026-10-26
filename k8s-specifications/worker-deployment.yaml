@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: worker
   labels:
     app: worker
-  name: worker
 spec:
   replicas: 1
   selector:
@@ -15,5 +15,6 @@ spec:
         app: worker
     spec:
       containers:
-      - image: dockersamples/examplevotingapp_worker
-        name: worker
+        - name: worker
+          image: example-voting-app-worker:latest
+          imagePullPolicy: IfNotPresent
