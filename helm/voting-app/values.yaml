@@ -1,0 +1,38 @@
+nameOverride: ""
+
+vote:
+  replicaCount: 1
+  image: example-voting-app-vote:latest
+  imagePullPolicy: IfNotPresent
+  containerPort: 8080
+  service:
+    type: NodePort
+    port: 8080
+    nodePort: 31000
+
+result:
+  replicaCount: 1
+  image: example-voting-app-result:latest
+  imagePullPolicy: IfNotPresent
+  containerPort: 3000
+  service:
+    type: NodePort
+    port: 8081
+    nodePort: 31001
+
+worker:
+  replicaCount: 1
+  image: example-voting-app-worker:latest
+  imagePullPolicy: IfNotPresent
+
+postgres:
+  image: postgres:15-alpine
+  replicaCount: 1
+  servicePort: 5432
+  username: postgres
+  password: postgres
+
+redis:
+  image: redis:alpine
+  replicaCount: 1
+  servicePort: 6379

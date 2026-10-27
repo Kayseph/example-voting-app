@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "voting-app.name" (dict "name" "result") }}
+  labels:
+    app: result
+spec:
+  replicas: {{ .Values.result.replicaCount }}
+  selector:
+    matchLabels:
+      app: result
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+        - name: result
+          image: {{ .Values.result.image | quote }}
+          imagePullPolicy: {{ .Values.result.imagePullPolicy }}
+          ports:
+            - name: result
+              containerPort: {{ .Values.result.containerPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "voting-app.name" (dict "name" "result") }}
+spec:
+  type: {{ .Values.result.service.type }}
+  selector:
+    app: result
+  ports:
+    - name: result-service
+      port: {{ .Values.result.service.port }}
+      targetPort: {{ .Values.result.containerPort }}
+      nodePort: {{ .Values.result.service.nodePort }}
